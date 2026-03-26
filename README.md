@@ -37,15 +37,14 @@ Just import, build and run.
 
 ### Quick check
 #### LED color
-Just after the program start, the LED blinks in colors in short time.  
+Just after the program starts, the LED blinks in colors for a short time.
 
 #### Looping back
 Short the D0 and D1 pins together to create a loopback path.  
 Open a terminal at 115200 baud on the MCU-Link USB port (J15) — typed characters should echo back immediately.
 
 ## Projects
- There are some projects implemented in different ways.   
- 
+
 ### * u2u_FRDM_MCXA153
 Rewritten in C++ using r01lib library API to have good extensibility.  
 Bridges MCU-Link USB connector (J15) ↔ Arduino shield D0/D1 (J1-2, J1-4).
@@ -54,11 +53,11 @@ Bridges MCU-Link USB connector (J15) ↔ Arduino shield D0/D1 (J1-2, J1-4).
 **Environment:** MCUXpresso IDE or VS Code  
 
 ### * _r01lib_frdm_mcxa153
-A library project: r01lib. This project cannot run by itself. This project is linked from `daplink2uart_bridge_r01lib` project.  
+A library project: r01lib. This project cannot run by itself. This project is linked from `u2u_FRDM_MCXA153` project.
 
-### *__exerciser__hello_world_generator_FRDM_MCXA153
-A test tool for brige's RX capability.  
-This app transmit test data from D1 pin continuously.  
+### * __exerciser__hello_world_generator_FRDM_MCXA153
+A test tool for the bridge's RX capability.
+This app transmits test data from the D1 pin continuously.
 
 **Board:** FRDM-MCXA153  
 **Environment:** MCUXpresso IDE or VS Code  

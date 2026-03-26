@@ -1,12 +1,12 @@
 /*
- *  main_serial_bridge.cpp
+ *  main.cpp
  *
  *  UART bridge sample for FRDM-MCXA153 using r01lib Serial class
  *
  *  Forwards data bidirectionally between two UART channels:
  *
- *    PC side  : LPUART0  USBTX(P0_3)  / USBRX(P0_2)   115200 baud
- *    Target   : LPUART2  MB_TX(P3_15) / MB_RX(P3_14)  115200 baud
+ *    PC side  : LPUART0  USBTX(P0_3) / USBRX(P0_2)  115200 baud
+ *    Target   : LPUART2  D1(TX)      / D0(RX)       115200 baud
  *
  *  Data flow:
  *    PC     --> FRDM (LPUART0 RX) --> forwarded to LPUART2 TX --> Target
@@ -19,21 +19,21 @@
  *  Wiring:
  *    FRDM P0_3 (USBTX) --> USB-Serial adapter RX  (PC side)
  *    FRDM P0_2 (USBRX) --> USB-Serial adapter TX  (PC side)
- *    FRDM P3_15 (MB_TX) --> Target device RX
- *    FRDM P3_14 (MB_RX) --> Target device TX
- *    GND                --> common GND
+ *    FRDM D1   (TX)    --> Target device RX
+ *    FRDM D0   (RX)    --> Target device TX
+ *    GND               --> common GND
  *
  *  Prerequisites:
- *    - r01lib project with semihosting (SEMIHOST_OPERATION defined)
- *      So, for FRDM board standalone operation, don't use "printf"
- *      because it will block program execution
+ *    - r01lib built with semihosting enabled (SEMIHOST_OPERATION defined)
+ *      For standalone FRDM operation, do not use printf() as it will
+ *      block execution when no debugger is attached
  */
 
 #include "r01lib.h"
 
 volatile bool	tx_done	= false;
 
-// ---- 2 UART channels -------------------------------------------------------
+// ---- UART channels ---------------------------------------------------------
 
 Serial	pc(   USBTX, USBRX, 115200 );   // PC side
 Serial	uart( D1,    D0,    115200 );   // Target
@@ -55,7 +55,7 @@ int main( void )
 	pc.attach(   on_pc_rx,   Serial::RxIrq );
 	uart.attach( on_uart_rx, Serial::RxIrq );
 
-	// Check TX/RX by LED color change
+	// Indicate TX/RX activity by cycling the LED color
 	while ( true )
 	{
 		if ( tx_done )
